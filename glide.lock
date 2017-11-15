@@ -1,0 +1,15 @@
+hash: a24f14f1a25558ba522b04e3c2c154dcca509c35f256ef38d71ab86ab1ef4fd5
+updated: 2017-11-14T11:16:30.23586685+08:00
+imports:
+- name: github.com/mongodb/mongo-tools
+  version: 4f093ae71cdb4c6a6e9de7cd1dc67ea4405f0013
+  subpackages:
+  - common/util
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
+  subpackages:
+  - bson
+  - internal/json
+  - internal/sasl
+  - internal/scram
+testImports: []

@@ -1,0 +1,9 @@
+package: mongo-crasher
+import:
+- package: github.com/mongodb/mongo-tools
+  version: ^3.2.0-rc3
+  subpackages:
+  - common/util
+- package: gopkg.in/mgo.v2
+  subpackages:
+  - bson
