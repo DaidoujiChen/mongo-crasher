@@ -3,6 +3,8 @@ package common
 import (
 	"fmt"
 	"math/rand"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -31,20 +33,19 @@ func CoreRunLoop(mongoDBClient *mgo.Session, wait *sync.WaitGroup, done chan boo
 		totalTimeSpend += (time.Now().Sub(start))
 
 		// mgo 開啟 connection 數量
+		eachCount := []string{}
 		totalSocketCount := 0
 		servers := mongoDBClient.Cluster().Servers()
 		for _, server := range servers.Slice() {
+			eachCount = append(eachCount, strconv.Itoa(len(server.LiveSockets())))
 			totalSocketCount += len(server.LiveSockets())
 		}
+		eachCountString := "(" + strings.Join(eachCount[:], "/") + ")"
 
 		// 打印一下結果
-		fmt.Printf("\r[ %fsec ] Rounds : %d, Cost : %f ns/op, MGO Connections : %d", totalTimeSpend.Seconds(), totalRounds, float32(totalTimeSpend)/float32(totalRounds), totalSocketCount)
+		fmt.Printf("\r[ %fsec ] Rounds : %d, Cost : %f ns/op, MGO Connections : %d %s          ", totalTimeSpend.Seconds(), totalRounds, float32(totalTimeSpend)/float32(totalRounds), totalSocketCount, eachCountString)
 
 		// 睡一下, 好像不睡用 freestyle 會爆
 		time.Sleep(500 * time.Millisecond)
-		if totalSocketCount >= 100 {
-			done <- true
-			return
-		}
 	}
 }

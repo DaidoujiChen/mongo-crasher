@@ -1,7 +1,6 @@
 package freestyle
 
 import (
-	"fmt"
 	"mongo-crasher/common"
 	"mongo-crasher/db"
 	"sync"
@@ -14,11 +13,7 @@ import (
 func fetch(mongoDBClient *mgo.Session, wait *sync.WaitGroup) {
 	mgoSession := mongoDBClient.Copy()
 	var result []interface{}
-	err := mgoSession.DB("O3O").C("CoCoChan").Find(bson.M{}).All(&result)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	mgoSession.DB("O3O").C("CoCoChan").Find(bson.M{}).All(&result)
 	mgoSession.Close()
 	wait.Done()
 }
